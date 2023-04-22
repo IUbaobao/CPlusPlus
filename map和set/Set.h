@@ -23,10 +23,9 @@ namespace hdm
 		typedef typename hdm::RBTree<K,K,KeyofK<K>>::const_iterator iterator;
 		typedef typename hdm::RBTree<K, K, KeyofK<K>>::const_iterator const_iterator;
 
-		bool insert(const K& key)
+		std::pair<iterator,bool> insert(const K& key)
 		{
-			std::pair<iterator, bool> ret = _t.Insert(key);
-			return ret.second;
+			return _t.Insert(key);
 		}
 
 		iterator begin()const
@@ -36,6 +35,14 @@ namespace hdm
 		iterator end()const
 		{
 			return _t.end();
+		}
+		bool empty()
+		{
+			return _t.empty();
+		}
+		size_t size()
+		{
+			return _t.size();
 		}
 	private:
 		hdm::RBTree<K, K, KeyofK<K>> _t;

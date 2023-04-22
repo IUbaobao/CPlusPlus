@@ -4,6 +4,7 @@
 #include <iostream>
 #include <time.h>
 #include <string>
+#include <assert.h>
 namespace hdm
 {
 	enum Color
@@ -21,7 +22,7 @@ namespace hdm
 		RBTreeNode<T>* _parent;
 		Color _col;
 
-		RBTreeNode(const T& data)
+		RBTreeNode(const T& data=T())
 			:_data(data),_left(nullptr),_right(nullptr),_parent(nullptr),_col(RED)//默认给节点红色
 		{}
 	};
@@ -34,17 +35,17 @@ namespace hdm
 		typedef _RBTreeIterator<T, T*, T&> iterator;
 
 		typedef RBTreeNode<T> Node;
-		_RBTreeIterator(Node* node):_node(node){}
+		_RBTreeIterator(Node* node,Node* header):_node(node),_header(header){}
 
 		_RBTreeIterator(const iterator& it)
-			:_node(it._node)
+			:_node(it._node),_header(it._header)
 		{}
 
 
 		Self operator++()
 		{
 			Node* cur = _node;
-			if (cur->_right)//如果存在右子树，则找右子树最左节点
+			if (cur->_right)//如果存在右子树，则找右子树最左节点(本质就是右子树的最小节点)
 			{
 				cur = cur->_right;
 				while (cur->_left)
@@ -56,7 +57,7 @@ namespace hdm
 			else//没有右子树，就找孩子是父亲左孩子的节点
 			{
 				Node* parent = cur->_parent;
-				while (parent&&parent->_left != cur)
+				while (parent!=_header&&parent->_left != cur)
 				{
 					cur = parent;
 					parent = cur->_parent;
@@ -68,25 +69,39 @@ namespace hdm
 
 		Self operator--()
 		{
-			Node* cur = _node;
-			if (cur->_left)//如果存在左子树，就找左子树的最右节点(本质就是左子树的最大节点)
+			if (_node == _header)//如果迭代器的位置是end,那么--之后就是最大值
 			{
+				Node* cur = _header->_parent;
 				while (cur->_right)
 				{
 					cur = cur->_right;
 				}
 				_node = cur;
 			}
-			else//找孩子是父亲的右孩子节点
+			else//正常节点的情况
 			{
-				Node* parent = cur->_parent;
-				while (parent && parent->_right != cur)
+				Node* cur = _node;
+				if (cur->_left)//如果存在左子树，就找左子树的最右节点(本质就是左子树的最大节点)
 				{
-					cur = parent;
-					parent = cur->_parent;
+					cur = cur->_left;
+					while (cur->_right)
+					{
+						cur = cur->_right;
+					}
+					_node = cur;
 				}
-				_node = parent;
+				else//找孩子是父亲的右孩子节点
+				{
+					Node* parent = cur->_parent;
+					while (parent != _header && parent->_right != cur)
+					{
+						cur = parent;
+						parent = cur->_parent;
+					}
+					_node = parent;
+				}
 			}
+			
 			return *this;
 		}
 
@@ -112,6 +127,7 @@ namespace hdm
 		}
 	//private:
 		Node* _node;
+		Node* _header;
 	};
 
 	template<class K,class T,class KeyOfT>
@@ -125,43 +141,48 @@ namespace hdm
 
 		iterator begin()
 		{
-			Node* cur = _root;
+			Node* cur = _header->_parent;
 			while (cur->_left)
 			{
 				cur = cur->_left;
 			}
-			return iterator(cur);
+			return iterator(cur, _header);
 		}
 
 		iterator end()
 		{
-			return iterator(nullptr);
+			return iterator(_header, _header);
 		}
 
 		const_iterator begin()const 
 		{
-			Node* cur = _root;
+			Node* cur = _header->_parent;
 			while (cur->_left)
 			{
 				cur = cur->_left;
 			}
-			return const_iterator(cur);
+			return const_iterator(cur, _header);
 		}
 		const_iterator end()const 
 		{
-			return const_iterator(nullptr);
+			return const_iterator(_header, _header);
 		}
 
 		std::pair<iterator,bool> Insert(const T& data)
 		{
-			if (_root == nullptr)
+			if (_header == nullptr)
 			{
-				_root = new Node(data);
-				_root->_col = BLACK;
-				return std::make_pair(iterator(_root), true);
+				_header = new Node();
+				Node* root = new Node(data);
+				root->_parent = _header;
+				_header->_parent = root;
+				_header->_left = _header->_right = root;
+				_header->_col = BLACK;
+				++_size;
+				return std::make_pair(iterator(_header->_parent, _header), true);
 			}
 
-			Node* cur = _root;
+			Node* cur = _header->_parent;
 			Node* parent = cur;//记录cur的父亲
 			while (cur)
 			{
@@ -177,7 +198,7 @@ namespace hdm
 				}
 				else
 				{
-					return std::make_pair(iterator(nullptr),false);//不运行插入重复节点
+					return std::make_pair(iterator(cur, _header),false);//不允许插入重复节点
 				}
 			}
 
@@ -195,7 +216,7 @@ namespace hdm
 			cur->_parent = parent;
 
 			//判断是否符合黑红树规则
-			while (parent && parent->_col == RED)
+			while (parent!=_header && parent->_col == RED)
 			{
 				//三种情况
 				//1.叔叔节点存在而且为空
@@ -278,13 +299,19 @@ namespace hdm
 
 			}//while end
 
-			_root->_col = BLACK;//保证根节点是黑色
-			return std::make_pair(iterator(newnode),true);
+			_header->_parent->_col = BLACK;//保证根节点是黑色
+			update_header();//更新虚拟头节点的孩子指向
+			++_size;
+			return std::make_pair(iterator(newnode, _header),true);
 		}//Insert end
 
-		Node* Find(const K& x)
+		size_t size()const
 		{
-			Node* cur = _root;
+			return _size;
+		}
+		iterator Find(const K& x)
+		{
+			Node* cur = _header->_parent;
 			while (cur)
 			{
 				if (KeyOfT()(cur->_data) > KeyOfT()(x))
@@ -297,27 +324,27 @@ namespace hdm
 				}
 				else
 				{
-					return cur;
+					return iterator(cur,_header);
 				}
 			}
-			return cur;
+			return iterator(cur, _header);
 		}
 		void InorderTree()
 		{
-			InorderTree(_root);
+			InorderTree(_header->_parent);
 		}
 		bool IsValidRBTree()
 		{
-			if (_root == nullptr)//空树也是红黑树
+			if (_header->_parent == nullptr)//空树也是红黑树
 				return true;
-			if (_root->_col != BLACK)
+			if (_header->_parent->_col != BLACK)
 			{
 				std::cout << "违反了红黑树性质二：根节点必须为黑色" << std::endl;
 				return false;
 			}
 			//获取任意一个节点的黑色节点
 			size_t blackCount = 0;
-			Node* cur = _root;
+			Node* cur = _header->_parent;
 			while (cur)
 			{
 				if (cur->_col == BLACK)
@@ -326,9 +353,52 @@ namespace hdm
 			}
 			// 检测是否满足红黑树的性质，k用来记录路径中黑色节点的个数
 			size_t k = 0;
-			return IsValidRBTree(_root, blackCount, k);
+			return IsValidRBTree(_header->_parent, blackCount, k);
+		}
+
+
+		void clear()
+		{
+			Node* cur = _header->_parent;
+			clear(cur);
+			_size = 0;
+			delete _header;
+		}
+
+		bool empty()
+		{
+			return _size == 0;
 		}
 	private:
+		void clear(Node* root)
+		{
+			if (root == nullptr)
+				return;
+			clear(root->_left);
+			clear(root->_right);
+			//--_size;
+			delete root;
+		}
+		void update_header()//创建虚拟头节点与_root连接or更新虚拟头节点的指向
+		{
+			Node* root = _header->_parent;
+			//找最小节点
+			Node* left_min = root;
+			while (left_min->_left)
+			{
+				left_min = left_min->_left;
+			}
+			//找最大节点
+			Node* right_max = root;
+			while (right_max->_right)
+			{
+				right_max = right_max->_right;
+			}
+			//hander的左孩子连接最小节点,右孩子连最大节点
+			_header->_left = left_min;
+			_header->_right = right_max;
+		}
+
 		void InorderTree(Node* root)
 		{
 			if (root == nullptr)
@@ -352,11 +422,10 @@ namespace hdm
 			subR->_left = parent;
 			parent->_parent = subR;
 			subR->_parent = pparent;
-			if (pparent == nullptr)
+			if (pparent == _header)
 			{
 				//那么subR就是新的根节点
-				_root = subR;
-				_root->_parent = nullptr;
+				_header->_parent = subR;
 			}
 			else
 			{
@@ -386,10 +455,9 @@ namespace hdm
 			parent->_parent = subL;
 			subL->_right = parent;
 			subL->_parent = pparent;
-			if (pparent == nullptr)
+			if (pparent == _header)
 			{
-				_root = subL;
-				_root->_parent = nullptr;
+				_header->_parent = subL;
 			}
 			else
 			{
@@ -434,7 +502,8 @@ namespace hdm
 		}
 
 	private:
-		Node* _root = nullptr;
+		Node* _header = nullptr;//哨兵位头节点
+		size_t _size = 0;// 红黑树中有效节点的个数
 	};
 
 
