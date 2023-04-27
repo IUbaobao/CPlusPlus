@@ -2,6 +2,6 @@
 
 int main()
 {
-	hdm::TestHT1();
+	buckethash::TestHT2();
 	return 0;
 }
