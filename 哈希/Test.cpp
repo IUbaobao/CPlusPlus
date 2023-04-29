@@ -1,8 +1,8 @@
 //#include "HashTable.h"
 #include <iostream>
 #include <unordered_map>
-#include "Unordered_set.h"
-#include "Unordered_map.h"
+#include "bitset.h"
+#include "BloomFilter.h"
 using namespace std;
 int main()
 {
@@ -18,8 +18,10 @@ int main()
 	//{
 	//	cout << e.first << ":" << e.second << endl;
 	//}
-	hdm::test_unordered_set();
-	hdm::test_unordered_map();
+	//test_bitset1();
+	//test_twobitset();
+	test_bloomfilter1();
+
 	return 0;
 }
 
