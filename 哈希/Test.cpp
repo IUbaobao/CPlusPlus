@@ -20,7 +20,8 @@ int main()
 	//}
 	//test_bitset1();
 	//test_twobitset();
-	test_bloomfilter1();
+	//hdm::test_bloomfilter1();
+	hdm::test_bloomfilter2();
 
 	return 0;
 }
