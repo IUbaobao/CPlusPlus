@@ -102,30 +102,114 @@
 //示例 1：
 //输入：nums = [4, 6, 7, 7]
 //输出： [[4, 6], [4, 6, 7], [4, 6, 7, 7], [4, 7], [4, 7, 7], [6, 7], [6, 7, 7], [7, 7]]
+//
+//class Solution {
+//public:
+//    vector<vector<int>> reslut;
+//    vector<int> path;
+//    vector<vector<int>> findSubsequences(vector<int>& nums) {
+//        backtracking(nums, 0);
+//        return reslut;
+//    }
+//
+//    void backtracking(vector<int>& nums, int stari)
+//    {
+//        if (path.size() > 1)
+//        {
+//            reslut.push_back(path);
+//        }
+//        unordered_set<int> s;//本层去重
+//        for (int i = stari; i < nums.size(); ++i)
+//        {
+//            if ((path.size() > 0 && nums[i] < path.back()) || s.find(nums[i]) != s.end())
+//                continue;
+//            s.insert(nums[i]);
+//            path.push_back(nums[i]);
+//            backtracking(nums, i + 1);
+//            path.pop_back();
+//        }
+//    }
+//};
+
+
+//46. 全排列
+//给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+//
+//示例 1：
+//输入：nums = [1, 2, 3]
+//输出： [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+
 
 class Solution {
 public:
     vector<vector<int>> reslut;
     vector<int> path;
-    vector<vector<int>> findSubsequences(vector<int>& nums) {
-        backtracking(nums, 0);
+    vector<vector<int>> permute(vector<int>& nums) {
+
+        vector<bool> used(nums.size(), false);//记录已经使用过的数
+        backtracking(nums, used);
         return reslut;
     }
 
-    void backtracking(vector<int>& nums, int stari)
+    void backtracking(const vector<int>& nums, vector<bool>& used)
     {
-        if (path.size() > 1)
+        if (path.size() == nums.size())
         {
             reslut.push_back(path);
+            return;
         }
-        unordered_set<int> s;//本层去重
-        for (int i = stari; i < nums.size(); ++i)
+
+        for (int i = 0; i < nums.size(); ++i)
         {
-            if ((path.size() > 0 && nums[i] < path.back()) || s.find(nums[i]) != s.end())
+            if (used[i] == true)//过滤已经选过的数
                 continue;
-            s.insert(nums[i]);
             path.push_back(nums[i]);
-            backtracking(nums, i + 1);
+            used[i] = true;
+            backtracking(nums, used);
+            used[i] = false;
+            path.pop_back();
+        }
+    }
+};
+
+
+//47. 全排列 II
+//给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
+//
+//示例 1：
+//输入：nums = [1, 1, 2]
+//输出：
+//[[1, 1, 2],
+//[1, 2, 1],
+//[2, 1, 1]]
+
+class Solution {
+public:
+    vector<vector<int>> reslut;
+    vector<int> path;
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<bool> used(nums.size(), false);//记录已经使用过的数
+        sort(nums.begin(), nums.end());//排序是让相同的元素堆在一起
+        backtracking(nums, used);
+        return reslut;
+
+    }
+    void backtracking(const vector<int>& nums, vector<bool>& used)
+    {
+        if (path.size() == nums.size())
+        {
+            reslut.push_back(path);
+            return;
+        }
+
+        for (int i = 0; i < nums.size(); ++i)
+        {
+            if ((used[i] == true) || (i > 0 && nums[i - 1] == nums[i] && used[i - 1] == false))//过滤已经选过的数和相同的数--抽象成树层去重
+                continue;
+            path.push_back(nums[i]);
+            used[i] = true;
+            backtracking(nums, used);
+            used[i] = false;
             path.pop_back();
         }
     }
