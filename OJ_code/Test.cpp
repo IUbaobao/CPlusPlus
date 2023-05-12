@@ -1,8 +1,8 @@
-//#include <iostream>
+ï»¿//#include <iostream>
 //#include <vector>
 //#include <string>
 //using namespace std;
-////93. ¸´Ô­ IP µØÖ·
+////93. å¤åŸ IP åœ°å€
 //class Solution {
 //public:
 //    vector<string> result;
@@ -58,18 +58,18 @@
 
 
 //
-//90. ×Ó¼¯ II
-//¸øÄãÒ»¸öÕûÊıÊı×é nums £¬ÆäÖĞ¿ÉÄÜ°üº¬ÖØ¸´ÔªËØ£¬ÇëÄã·µ»Ø¸ÃÊı×éËùÓĞ¿ÉÄÜµÄ×Ó¼¯£¨Ãİ¼¯£©¡£
-//½â¼¯ ²»ÄÜ °üº¬ÖØ¸´µÄ×Ó¼¯¡£·µ»ØµÄ½â¼¯ÖĞ£¬×Ó¼¯¿ÉÒÔ°´ ÈÎÒâË³Ğò ÅÅÁĞ¡£
-//Ê¾Àı 1£º
-//ÊäÈë£ºnums = [1, 2, 2]
-//Êä³ö£º [[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]
+//90. å­é›† II
+//ç»™ä½ ä¸€ä¸ªæ•´æ•°æ•°ç»„ nums ï¼Œå…¶ä¸­å¯èƒ½åŒ…å«é‡å¤å…ƒç´ ï¼Œè¯·ä½ è¿”å›è¯¥æ•°ç»„æ‰€æœ‰å¯èƒ½çš„å­é›†ï¼ˆå¹‚é›†ï¼‰ã€‚
+//è§£é›† ä¸èƒ½ åŒ…å«é‡å¤çš„å­é›†ã€‚è¿”å›çš„è§£é›†ä¸­ï¼Œå­é›†å¯ä»¥æŒ‰ ä»»æ„é¡ºåº æ’åˆ—ã€‚
+//ç¤ºä¾‹ 1ï¼š
+//è¾“å…¥ï¼šnums = [1, 2, 2]
+//è¾“å‡ºï¼š [[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]
 //class Solution {
 //public:
 //    vector<vector<int>> reslut;
 //    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
 //        vector<int> path;
-//        vector<bool> used(nums.size(), false);//ÓÃÀ´ÅĞ¶ÏÊÇ·ñÊ¹ÓÃ¹ıÕâ¸öÊı
+//        vector<bool> used(nums.size(), false);//ç”¨æ¥åˆ¤æ–­æ˜¯å¦ä½¿ç”¨è¿‡è¿™ä¸ªæ•°
 //        sort(nums.begin(), nums.end());
 //        backtracking(nums, path, 0, used);
 //        return reslut;
@@ -96,12 +96,12 @@
 
 
 
-//491. µİÔö×ÓĞòÁĞ
-//¸øÄãÒ»¸öÕûÊıÊı×é nums £¬ÕÒ³ö²¢·µ»ØËùÓĞ¸ÃÊı×éÖĞ²»Í¬µÄµİÔö×ÓĞòÁĞ£¬µİÔö×ÓĞòÁĞÖĞ ÖÁÉÙÓĞÁ½¸öÔªËØ ¡£Äã¿ÉÒÔ°´ ÈÎÒâË³Ğò ·µ»Ø´ğ°¸¡£
-//Êı×éÖĞ¿ÉÄÜº¬ÓĞÖØ¸´ÔªËØ£¬Èç³öÏÖÁ½¸öÕûÊıÏàµÈ£¬Ò²¿ÉÒÔÊÓ×÷µİÔöĞòÁĞµÄÒ»ÖÖÌØÊâÇé¿ö¡£
-//Ê¾Àı 1£º
-//ÊäÈë£ºnums = [4, 6, 7, 7]
-//Êä³ö£º [[4, 6], [4, 6, 7], [4, 6, 7, 7], [4, 7], [4, 7, 7], [6, 7], [6, 7, 7], [7, 7]]
+//491. é€’å¢å­åºåˆ—
+//ç»™ä½ ä¸€ä¸ªæ•´æ•°æ•°ç»„ nums ï¼Œæ‰¾å‡ºå¹¶è¿”å›æ‰€æœ‰è¯¥æ•°ç»„ä¸­ä¸åŒçš„é€’å¢å­åºåˆ—ï¼Œé€’å¢å­åºåˆ—ä¸­ è‡³å°‘æœ‰ä¸¤ä¸ªå…ƒç´  ã€‚ä½ å¯ä»¥æŒ‰ ä»»æ„é¡ºåº è¿”å›ç­”æ¡ˆã€‚
+//æ•°ç»„ä¸­å¯èƒ½å«æœ‰é‡å¤å…ƒç´ ï¼Œå¦‚å‡ºç°ä¸¤ä¸ªæ•´æ•°ç›¸ç­‰ï¼Œä¹Ÿå¯ä»¥è§†ä½œé€’å¢åºåˆ—çš„ä¸€ç§ç‰¹æ®Šæƒ…å†µã€‚
+//ç¤ºä¾‹ 1ï¼š
+//è¾“å…¥ï¼šnums = [4, 6, 7, 7]
+//è¾“å‡ºï¼š [[4, 6], [4, 6, 7], [4, 6, 7, 7], [4, 7], [4, 7, 7], [6, 7], [6, 7, 7], [7, 7]]
 //
 //class Solution {
 //public:
@@ -118,7 +118,7 @@
 //        {
 //            reslut.push_back(path);
 //        }
-//        unordered_set<int> s;//±¾²ãÈ¥ÖØ
+//        unordered_set<int> s;//æœ¬å±‚å»é‡
 //        for (int i = stari; i < nums.size(); ++i)
 //        {
 //            if ((path.size() > 0 && nums[i] < path.back()) || s.find(nums[i]) != s.end())
@@ -132,12 +132,12 @@
 //};
 
 
-//46. È«ÅÅÁĞ
-//¸ø¶¨Ò»¸ö²»º¬ÖØ¸´Êı×ÖµÄÊı×é nums £¬·µ»ØÆä ËùÓĞ¿ÉÄÜµÄÈ«ÅÅÁĞ ¡£Äã¿ÉÒÔ °´ÈÎÒâË³Ğò ·µ»Ø´ğ°¸¡£
+//46. å…¨æ’åˆ—
+//ç»™å®šä¸€ä¸ªä¸å«é‡å¤æ•°å­—çš„æ•°ç»„ nums ï¼Œè¿”å›å…¶ æ‰€æœ‰å¯èƒ½çš„å…¨æ’åˆ— ã€‚ä½ å¯ä»¥ æŒ‰ä»»æ„é¡ºåº è¿”å›ç­”æ¡ˆã€‚
 //
-//Ê¾Àı 1£º
-//ÊäÈë£ºnums = [1, 2, 3]
-//Êä³ö£º [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+//ç¤ºä¾‹ 1ï¼š
+//è¾“å…¥ï¼šnums = [1, 2, 3]
+//è¾“å‡ºï¼š [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
 
 
 class Solution {
@@ -146,7 +146,7 @@ public:
     vector<int> path;
     vector<vector<int>> permute(vector<int>& nums) {
 
-        vector<bool> used(nums.size(), false);//¼ÇÂ¼ÒÑ¾­Ê¹ÓÃ¹ıµÄÊı
+        vector<bool> used(nums.size(), false);//è®°å½•å·²ç»ä½¿ç”¨è¿‡çš„æ•°
         backtracking(nums, used);
         return reslut;
     }
@@ -161,7 +161,7 @@ public:
 
         for (int i = 0; i < nums.size(); ++i)
         {
-            if (used[i] == true)//¹ıÂËÒÑ¾­Ñ¡¹ıµÄÊı
+            if (used[i] == true)//è¿‡æ»¤å·²ç»é€‰è¿‡çš„æ•°
                 continue;
             path.push_back(nums[i]);
             used[i] = true;
@@ -173,44 +173,111 @@ public:
 };
 
 
-//47. È«ÅÅÁĞ II
-//¸ø¶¨Ò»¸ö¿É°üº¬ÖØ¸´Êı×ÖµÄĞòÁĞ nums £¬°´ÈÎÒâË³Ğò ·µ»ØËùÓĞ²»ÖØ¸´µÄÈ«ÅÅÁĞ¡£
+//47. å…¨æ’åˆ— II
+//ç»™å®šä¸€ä¸ªå¯åŒ…å«é‡å¤æ•°å­—çš„åºåˆ— nums ï¼ŒæŒ‰ä»»æ„é¡ºåº è¿”å›æ‰€æœ‰ä¸é‡å¤çš„å…¨æ’åˆ—ã€‚
 //
-//Ê¾Àı 1£º
-//ÊäÈë£ºnums = [1, 1, 2]
-//Êä³ö£º
+//ç¤ºä¾‹ 1ï¼š
+//è¾“å…¥ï¼šnums = [1, 1, 2]
+//è¾“å‡ºï¼š
 //[[1, 1, 2],
 //[1, 2, 1],
 //[2, 1, 1]]
+//
+//class Solution {
+//public:
+//    vector<vector<int>> reslut;
+//    vector<int> path;
+//    vector<vector<int>> permuteUnique(vector<int>& nums) {
+//        vector<bool> used(nums.size(), false);//è®°å½•å·²ç»ä½¿ç”¨è¿‡çš„æ•°
+//        sort(nums.begin(), nums.end());//æ’åºæ˜¯è®©ç›¸åŒçš„å…ƒç´ å †åœ¨ä¸€èµ·
+//        backtracking(nums, used);
+//        return reslut;
+//
+//    }
+//    void backtracking(const vector<int>& nums, vector<bool>& used)
+//    {
+//        if (path.size() == nums.size())
+//        {
+//            reslut.push_back(path);
+//            return;
+//        }
+//
+//        for (int i = 0; i < nums.size(); ++i)
+//        {
+//            if ((used[i] == true) || (i > 0 && nums[i - 1] == nums[i] && used[i - 1] == false))//è¿‡æ»¤å·²ç»é€‰è¿‡çš„æ•°å’Œç›¸åŒçš„æ•°--æŠ½è±¡æˆæ ‘å±‚å»é‡
+//                continue;
+//            path.push_back(nums[i]);
+//            used[i] = true;
+//            backtracking(nums, used);
+//            used[i] = false;
+//            path.pop_back();
+//        }
+//    }
+//};
+
+
+//51. N çš‡å
+//æŒ‰ç…§å›½é™…è±¡æ£‹çš„è§„åˆ™ï¼Œçš‡åå¯ä»¥æ”»å‡»ä¸ä¹‹å¤„åœ¨åŒä¸€è¡Œæˆ–åŒä¸€åˆ—æˆ–åŒä¸€æ–œçº¿ä¸Šçš„æ£‹å­ã€‚
+//
+//nÂ çš‡åé—®é¢˜ ç ”ç©¶çš„æ˜¯å¦‚ä½•å°† nÂ ä¸ªçš‡åæ”¾ç½®åœ¨ nÃ—n çš„æ£‹ç›˜ä¸Šï¼Œå¹¶ä¸”ä½¿çš‡åå½¼æ­¤ä¹‹é—´ä¸èƒ½ç›¸äº’æ”»å‡»ã€‚
+//
+//ç»™ä½ ä¸€ä¸ªæ•´æ•° n ï¼Œè¿”å›æ‰€æœ‰ä¸åŒçš„Â nÂ çš‡åé—®é¢˜ çš„è§£å†³æ–¹æ¡ˆã€‚
+//
+//æ¯ä¸€ç§è§£æ³•åŒ…å«ä¸€ä¸ªä¸åŒçš„Â n çš‡åé—®é¢˜ çš„æ£‹å­æ”¾ç½®æ–¹æ¡ˆï¼Œè¯¥æ–¹æ¡ˆä¸­ 'Q' å’Œ '.' åˆ†åˆ«ä»£è¡¨äº†çš‡åå’Œç©ºä½ã€‚
 
 class Solution {
 public:
-    vector<vector<int>> reslut;
-    vector<int> path;
-    vector<vector<int>> permuteUnique(vector<int>& nums) {
-        vector<bool> used(nums.size(), false);//¼ÇÂ¼ÒÑ¾­Ê¹ÓÃ¹ıµÄÊı
-        sort(nums.begin(), nums.end());//ÅÅĞòÊÇÈÃÏàÍ¬µÄÔªËØ¶ÑÔÚÒ»Æğ
-        backtracking(nums, used);
+    vector<vector<string>> reslut;
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> chessboard(n, string(n, '.'));
+        backtracking(n, 0, chessboard);
         return reslut;
-
     }
-    void backtracking(const vector<int>& nums, vector<bool>& used)
+
+    void backtracking(int n, int row, vector<string>& chessboard)
     {
-        if (path.size() == nums.size())
+        if (n == row)
         {
-            reslut.push_back(path);
+            reslut.push_back(chessboard);
             return;
         }
 
-        for (int i = 0; i < nums.size(); ++i)
+        for (int col = 0; col < n; ++col)
         {
-            if ((used[i] == true) || (i > 0 && nums[i - 1] == nums[i] && used[i - 1] == false))//¹ıÂËÒÑ¾­Ñ¡¹ıµÄÊıºÍÏàÍ¬µÄÊı--³éÏó³ÉÊ÷²ãÈ¥ÖØ
+            if (!isvalid(chessboard, row, col, n))
                 continue;
-            path.push_back(nums[i]);
-            used[i] = true;
-            backtracking(nums, used);
-            used[i] = false;
-            path.pop_back();
+            chessboard[row][col] = 'Q';
+            backtracking(n, row + 1, chessboard);
+            chessboard[row][col] = '.';
         }
     }
+
+    bool isvalid(const vector<string>& chessboard, int row, int col, int n)
+    {
+        //æ£€æŸ¥åˆ—
+        for (int i = 0; i < row; ++i)
+        {
+            if (chessboard[i][col] == 'Q')
+                return false;
+        }
+
+        //æ£€æŸ¥45åº¦
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; --i, ++j)
+        {
+            if (chessboard[i][j] == 'Q')
+                return false;
+        }
+
+        //æ£€æŸ¥135åº¦
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
+        {
+            if (chessboard[i][j] == 'Q')
+                return false;
+        }
+
+        return true;
+    }
 };
+
+
+
