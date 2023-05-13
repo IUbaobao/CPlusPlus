@@ -225,59 +225,138 @@ public:
 //
 //每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
 
+//class Solution {
+//public:
+//    vector<vector<string>> reslut;
+//    vector<vector<string>> solveNQueens(int n) {
+//        vector<string> chessboard(n, string(n, '.'));
+//        backtracking(n, 0, chessboard);
+//        return reslut;
+//    }
+//
+//    void backtracking(int n, int row, vector<string>& chessboard)
+//    {
+//        if (n == row)
+//        {
+//            reslut.push_back(chessboard);
+//            return;
+//        }
+//
+//        for (int col = 0; col < n; ++col)
+//        {
+//            if (!isvalid(chessboard, row, col, n))
+//                continue;
+//            chessboard[row][col] = 'Q';
+//            backtracking(n, row + 1, chessboard);
+//            chessboard[row][col] = '.';
+//        }
+//    }
+//
+//    bool isvalid(const vector<string>& chessboard, int row, int col, int n)
+//    {
+//        //检查列
+//        for (int i = 0; i < row; ++i)
+//        {
+//            if (chessboard[i][col] == 'Q')
+//                return false;
+//        }
+//
+//        //检查45度
+//        for (int i = row - 1, j = col + 1; i >= 0 && j < n; --i, ++j)
+//        {
+//            if (chessboard[i][j] == 'Q')
+//                return false;
+//        }
+//
+//        //检查135度
+//        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
+//        {
+//            if (chessboard[i][j] == 'Q')
+//                return false;
+//        }
+//
+//        return true;
+//    }
+//};
+
+//37. 解数独
+//编写一个程序，通过填充空格来解决数独问题。
+//
+//数独的解法需 遵循如下规则：
+//
+//数字 1 - 9 在每一行只能出现一次。
+//数字 1 - 9 在每一列只能出现一次。
+//数字 1 - 9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+//数独部分空格内已填入了数字，空白格用 '.' 表示。
+
 class Solution {
 public:
-    vector<vector<string>> reslut;
-    vector<vector<string>> solveNQueens(int n) {
-        vector<string> chessboard(n, string(n, '.'));
-        backtracking(n, 0, chessboard);
-        return reslut;
+    void solveSudoku(vector<vector<char>>& board) {
+        backtracking(board);
     }
 
-    void backtracking(int n, int row, vector<string>& chessboard)
+    bool backtracking(vector<vector<char>>& board)
     {
-        if (n == row)
-        {
-            reslut.push_back(chessboard);
-            return;
-        }
-
-        for (int col = 0; col < n; ++col)
-        {
-            if (!isvalid(chessboard, row, col, n))
-                continue;
-            chessboard[row][col] = 'Q';
-            backtracking(n, row + 1, chessboard);
-            chessboard[row][col] = '.';
-        }
-    }
-
-    bool isvalid(const vector<string>& chessboard, int row, int col, int n)
-    {
-        //检查列
-        for (int i = 0; i < row; ++i)
-        {
-            if (chessboard[i][col] == 'Q')
+        for (int i = 0; i < board.size(); ++i)
+            for (int j = 0; j < board[0].size(); ++j)
+            {
+                if (board[i][j] != '.')
+                    continue;
+                for (char k = '1'; k <= '9'; ++k)
+                {
+                    if (isvalid(i, j, k, board))
+                    {
+                        board[i][j] = k;
+                        if (backtracking(board))
+                            return true;
+                        board[i][j] = '.';
+                    }
+                }
                 return false;
-        }
-
-        //检查45度
-        for (int i = row - 1, j = col + 1; i >= 0 && j < n; --i, ++j)
-        {
-            if (chessboard[i][j] == 'Q')
-                return false;
-        }
-
-        //检查135度
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
-        {
-            if (chessboard[i][j] == 'Q')
-                return false;
-        }
+            }
 
         return true;
     }
+
+    bool isvalid(int row, int col, char k, vector<vector<char>>& board)
+    {
+        //检查列
+        for (int i = 0; i < board.size(); ++i)
+        {
+            if (board[i][col] == k)
+                return false;
+        }
+
+        //检查行
+        for (int j = 0; j < board.size(); ++j)
+        {
+            if (board[row][j] == k)
+                return false;
+        }
+
+        int startRow = (row / 3) * 3;
+        int startCol = (col / 3) * 3;
+        for (int i = startRow; i < startRow + 3; ++i)
+        {
+            for (int j = startCol; j < startCol + 3; ++j)
+            {
+                if (board[i][j] == k)
+                    return false;
+            }
+        }
+        return true;
+    }
 };
+
+
+
+
+
+
+
+
+
+
 
 
 
