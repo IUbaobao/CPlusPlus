@@ -140,37 +140,37 @@
 //输出： [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
 
 
-class Solution {
-public:
-    vector<vector<int>> reslut;
-    vector<int> path;
-    vector<vector<int>> permute(vector<int>& nums) {
-
-        vector<bool> used(nums.size(), false);//记录已经使用过的数
-        backtracking(nums, used);
-        return reslut;
-    }
-
-    void backtracking(const vector<int>& nums, vector<bool>& used)
-    {
-        if (path.size() == nums.size())
-        {
-            reslut.push_back(path);
-            return;
-        }
-
-        for (int i = 0; i < nums.size(); ++i)
-        {
-            if (used[i] == true)//过滤已经选过的数
-                continue;
-            path.push_back(nums[i]);
-            used[i] = true;
-            backtracking(nums, used);
-            used[i] = false;
-            path.pop_back();
-        }
-    }
-};
+//class Solution {
+//public:
+//    vector<vector<int>> reslut;
+//    vector<int> path;
+//    vector<vector<int>> permute(vector<int>& nums) {
+//
+//        vector<bool> used(nums.size(), false);//记录已经使用过的数
+//        backtracking(nums, used);
+//        return reslut;
+//    }
+//
+//    void backtracking(const vector<int>& nums, vector<bool>& used)
+//    {
+//        if (path.size() == nums.size())
+//        {
+//            reslut.push_back(path);
+//            return;
+//        }
+//
+//        for (int i = 0; i < nums.size(); ++i)
+//        {
+//            if (used[i] == true)//过滤已经选过的数
+//                continue;
+//            path.push_back(nums[i]);
+//            used[i] = true;
+//            backtracking(nums, used);
+//            used[i] = false;
+//            path.pop_back();
+//        }
+//    }
+//};
 
 
 //47. 全排列 II
@@ -288,75 +288,138 @@ public:
 //数字 1 - 9 在每一列只能出现一次。
 //数字 1 - 9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
 //数独部分空格内已填入了数字，空白格用 '.' 表示。
+//
+//class Solution {
+//public:
+//    void solveSudoku(vector<vector<char>>& board) {
+//        backtracking(board);
+//    }
+//
+//    bool backtracking(vector<vector<char>>& board)
+//    {
+//        for (int i = 0; i < board.size(); ++i)
+//            for (int j = 0; j < board[0].size(); ++j)
+//            {
+//                if (board[i][j] != '.')
+//                    continue;
+//                for (char k = '1'; k <= '9'; ++k)
+//                {
+//                    if (isvalid(i, j, k, board))
+//                    {
+//                        board[i][j] = k;
+//                        if (backtracking(board))
+//                            return true;
+//                        board[i][j] = '.';
+//                    }
+//                }
+//                return false;
+//            }
+//
+//        return true;
+//    }
+//
+//    bool isvalid(int row, int col, char k, vector<vector<char>>& board)
+//    {
+//        //检查列
+//        for (int i = 0; i < board.size(); ++i)
+//        {
+//            if (board[i][col] == k)
+//                return false;
+//        }
+//
+//        //检查行
+//        for (int j = 0; j < board.size(); ++j)
+//        {
+//            if (board[row][j] == k)
+//                return false;
+//        }
+//
+//        int startRow = (row / 3) * 3;
+//        int startCol = (col / 3) * 3;
+//        for (int i = startRow; i < startRow + 3; ++i)
+//        {
+//            for (int j = startCol; j < startCol + 3; ++j)
+//            {
+//                if (board[i][j] == k)
+//                    return false;
+//            }
+//        }
+//        return true;
+//    }
+//};
+
+
+//#include <iostream>
+//#include <cstring>
+//
+//#define SEP " "
+//#define SEP_LEN strlen(SEP) 
+//#define LINE_SEP "\r\n"
+//#define LINE_SEP_LEN strlen(LINE_SEP)
+//
+//
+//
+//int main()
+//{
+//	const char* str1 = SEP;
+//	const char* str2 = LINE_SEP;
+//
+//	printf("SEP_LEN strlen:%d\n", SEP_LEN);
+//	printf("SEP_LEN sizeof:%d\n", sizeof(SEP));
+//
+//	printf("LINE_SEP_LEN strlen:%d\n", LINE_SEP_LEN);
+//	printf("LINE_SEP_LEN sizeof:%d\n", sizeof(LINE_SEP));
+//
+//	return 0;
+//}
+//
+
+
+
+
+
+//三步问题
+//三步问题。有个小孩正在上楼梯，楼梯有n阶台阶，小孩一次可以上1阶、2阶或3阶。实现一种方法，计算小孩有多少种上楼梯的方式。结果可能很大，你需要对结果模1000000007。
+
+
+//class Solution {
+//public:
+//    int waysToStep(int n) {
+//        if (n == 1) return 1;
+//        if (n == 2) return 2;
+//        int mod = 1e9 + 7;
+//        int a = 1, b = 1, c = 2;
+//        int reslut = 0;
+//        for (int i = 3; i <= n; ++i)
+//        {
+//            reslut = ((a + b) % mod + c) % mod;
+//            a = b;
+//            b = c;
+//            c = reslut;
+//        }
+//        return reslut;
+//
+//    }
+//};
+
+//746. 使用最小花费爬楼梯
+//给你一个整数数组 cost ，其中 cost[i] 是从楼梯第 i 个台阶向上爬需要支付的费用。一旦你支付此费用，即可选择向上爬一个或者两个台阶。
+//
+//你可以选择从下标为 0 或下标为 1 的台阶开始爬楼梯。
+//
+//请你计算并返回达到楼梯顶部的最低花费。
 
 class Solution {
 public:
-    void solveSudoku(vector<vector<char>>& board) {
-        backtracking(board);
-    }
+    int minCostClimbingStairs(vector<int>& cost) {
 
-    bool backtracking(vector<vector<char>>& board)
-    {
-        for (int i = 0; i < board.size(); ++i)
-            for (int j = 0; j < board[0].size(); ++j)
-            {
-                if (board[i][j] != '.')
-                    continue;
-                for (char k = '1'; k <= '9'; ++k)
-                {
-                    if (isvalid(i, j, k, board))
-                    {
-                        board[i][j] = k;
-                        if (backtracking(board))
-                            return true;
-                        board[i][j] = '.';
-                    }
-                }
-                return false;
-            }
-
-        return true;
-    }
-
-    bool isvalid(int row, int col, char k, vector<vector<char>>& board)
-    {
-        //检查列
-        for (int i = 0; i < board.size(); ++i)
+        int n = cost.size();
+        vector<int> dp(cost.size() + 1);
+        dp[0] = 0, dp[1] = 0;
+        for (int i = 2; i <= n; ++i)
         {
-            if (board[i][col] == k)
-                return false;
+            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
         }
-
-        //检查行
-        for (int j = 0; j < board.size(); ++j)
-        {
-            if (board[row][j] == k)
-                return false;
-        }
-
-        int startRow = (row / 3) * 3;
-        int startCol = (col / 3) * 3;
-        for (int i = startRow; i < startRow + 3; ++i)
-        {
-            for (int j = startCol; j < startCol + 3; ++j)
-            {
-                if (board[i][j] == k)
-                    return false;
-            }
-        }
-        return true;
+        return dp[n];
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
