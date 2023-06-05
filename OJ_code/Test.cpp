@@ -409,17 +409,135 @@
 //
 //请你计算并返回达到楼梯顶部的最低花费。
 
+//class Solution {
+//public:
+//    int minCostClimbingStairs(vector<int>& cost) {
+//
+//        int n = cost.size();
+//        vector<int> dp(cost.size() + 1);
+//        dp[0] = 0, dp[1] = 0;
+//        for (int i = 2; i <= n; ++i)
+//        {
+//            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+//        }
+//        return dp[n];
+//    }
+//};
+//
+
+
+
+
+//62. 不同路径
+//一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+//机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+//问总共有多少条不同的路径？
+
+//class Solution {
+//public:
+//    int result = 0;
+//    int uniquePaths(int m, int n) {
+//        vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+//        dp[0][1] = 1;
+//        for (int i = 1; i < m + 1; ++i)
+//            for (int j = 1; j < n + 1; ++j)
+//            {
+//                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+//            }
+//        return dp[m][n];
+//    }
+//};
+
+
+//63. 不同路径 II
+//一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+//机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish”）。
+//现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+//网格中的障碍物和空位置分别用 1 和 0 来表示。
+
+//class Solution {
+//public:
+//    int uniquePathsWithObstacles(vector<vector<int>>& ob) {
+//
+//        int m = ob.size(), n = ob[0].size();
+//        vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+//        dp[0][1] = 1;
+//        for (int i = 1; i < m + 1; ++i)
+//            for (int j = 1; j < n + 1; ++j)
+//            {
+//                if (ob[i - 1][j - 1] == 1) dp[i][j] = 0;
+//                else dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+//            }
+//        return dp[m][n];
+//    }
+//};
+
+//剑指 Offer 47. 礼物的最大价值
+//在一个 m* n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
+
 class Solution {
 public:
-    int minCostClimbingStairs(vector<int>& cost) {
+    int maxValue(vector<vector<int>>& grid) {
 
-        int n = cost.size();
-        vector<int> dp(cost.size() + 1);
-        dp[0] = 0, dp[1] = 0;
-        for (int i = 2; i <= n; ++i)
-        {
-            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
-        }
-        return dp[n];
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+        for (int i = 1; i < m + 1; ++i)
+            for (int j = 1; j < n + 1; ++j)
+            {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]) + grid[i - 1][j - 1];
+            }
+
+        return dp[m][n];
+    }
+};
+
+
+//931. 下降路径最小和
+//给你一个 n x n 的 方形 整数数组 matrix ，请你找出并返回通过 matrix 的下降路径 的 最小和 。
+//
+//下降路径 可以从第一行中的任何元素开始，并从每一行中选择一个元素。在下一行选择的元素和当前行所选元素最多相隔一列（即位于正下方或者沿对角线向左或者向右的第一个元素）。具体来说，位置(row, col) 的下一个元素应当是(row + 1, col - 1)、(row + 1, col) 或者(row + 1, col + 1) 。
+
+
+//class Solution {
+//public:
+//    int minFallingPathSum(vector<vector<int>>& matrix) {
+//
+//        int n = matrix.size();
+//        vector<vector<int>> dp(n + 1, vector<int>(n + 2, INT_MAX));
+//        for (int i = 0; i < n + 2; ++i) dp[0][i] = 0;
+//
+//        for (int i = 1; i < n + 1; ++i)
+//            for (int j = 1; j < n + 1; ++j)
+//            {
+//                dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j + 1], dp[i - 1][j])) + matrix[i - 1][j - 1];
+//            }
+//
+//        int result = INT_MAX;
+//        for (int i = 1; i < n + 1; ++i)
+//            result = min(result, dp[n][i]);
+//        return result;
+//    }
+//};
+
+
+//64. 最小路径和
+//给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+//
+//说明：每次只能向下或者向右移动一步。
+
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+
+        int m = grid.size(), n = grid[0].size();
+
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, INT_MAX));
+        dp[0][1] = 0;
+        for (int i = 1; i < m + 1; ++i)
+            for (int j = 1; j < n + 1; ++j)
+            {
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i - 1][j - 1];
+            }
+        return dp[m][n];
     }
 };
