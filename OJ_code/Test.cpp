@@ -524,20 +524,129 @@ public:
 //给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
 //
 //说明：每次只能向下或者向右移动一步。
+//
+//class Solution {
+//public:
+//    int minPathSum(vector<vector<int>>& grid) {
+//
+//        int m = grid.size(), n = grid[0].size();
+//
+//        vector<vector<int>> dp(m + 1, vector<int>(n + 1, INT_MAX));
+//        dp[0][1] = 0;
+//        for (int i = 1; i < m + 1; ++i)
+//            for (int j = 1; j < n + 1; ++j)
+//            {
+//                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i - 1][j - 1];
+//            }
+//        return dp[m][n];
+//    }
+//};
+
+//174. 地下城游戏
+//恶魔们抓住了公主并将她关在了地下城 dungeon 的 右下角 。地下城是由 m x n 个房间组成的二维网格。我们英勇的骑士最初被安置在 左上角 的房间里，他必须穿过地下城并通过对抗恶魔来拯救公主。
+//
+//骑士的初始健康点数为一个正整数。如果他的健康点数在某一时刻降至 0 或以下，他会立即死亡。
+//
+//有些房间由恶魔守卫，因此骑士在进入这些房间时会失去健康点数（若房间里的值为负整数，则表示骑士将损失健康点数）；其他房间要么是空的（房间里的值为 0），要么包含增加骑士健康点数的魔法球（若房间里的值为正整数，则表示骑士将增加健康点数）。
+//
+//为了尽快解救公主，骑士决定每次只 向右 或 向下 移动一步。
+//
+//返回确保骑士能够拯救到公主所需的最低初始健康点数。
+//
+//注意：任何房间都可能对骑士的健康点数造成威胁，也可能增加骑士的健康点数，包括骑士进入的左上角房间以及公主被监禁的右下角房间。
+
+
+//class Solution {
+//public:
+//    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+//
+//        int m = dungeon.size(), n = dungeon[0].size();
+//        vector<vector<int>> dp(m + 1, vector<int>(n + 1, INT_MAX));
+//        //dp[i]:以i位置为起点到终点的最小健康值
+//        dp[m][n - 1] = dp[m - 1][n] = 1;//保证它到右下角的值为1
+//        for (int i = m - 1; i >= 0; --i)
+//            for (int j = n - 1; j >= 0; --j)
+//            {
+//                dp[i][j] = max(min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j], 1);
+//            }
+//        return dp[0][0];
+//    }
+//};
+
+
+//17.16.按摩师
+//一个有名的按摩师会收到源源不断的预约请求，每个预约都可以选择接或不接。在每次预约服务之间要有休息时间，因此她不能接受相邻的预约。给定一个预约请求序列，替按摩师找到最优的预约集合（总预约时间最长），返回总的分钟数。
+//输入：[1, 2, 3, 1]
+//输出： 4
+//解释： 选择 1 号预约和 3 号预约，总时长 = 1 + 3 = 4。
+//class Solution {
+//public:
+//    int massage(vector<int>& nums) {
+//
+//        int n = nums.size();
+//        if (n == 0)    return 0;
+//        vector<int> f(n);//f[i]表示接i位置的预约的最大值时间
+//        auto g = f;//g[i]表示不接i位置的预约的最大值时间
+//        f[0] = nums[0];
+//        for (int i = 1; i < n; ++i)
+//        {
+//            f[i] = g[i - 1] + nums[i];
+//            g[i] = max(f[i - 1], g[i - 1]);
+//        }
+//        return max(f[n - 1], g[n - 1]);
+//    }
+//};
+
+
+//198. 打家劫舍
+//你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+//
+//给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
 
 class Solution {
 public:
-    int minPathSum(vector<vector<int>>& grid) {
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 0)    return 0;
+        vector<int> f(n);//f[i]表示偷i位置的的最大值金额
+        auto g = f;//g[i]表示不偷i位置的的最大值金额
+        f[0] = nums[0];
+        for (int i = 1; i < n; ++i)
+        {
+            f[i] = g[i - 1] + nums[i];
+            g[i] = max(f[i - 1], g[i - 1]);
+        }
+        return max(f[n - 1], g[n - 1]);
 
-        int m = grid.size(), n = grid[0].size();
+    }
+};
 
-        vector<vector<int>> dp(m + 1, vector<int>(n + 1, INT_MAX));
-        dp[0][1] = 0;
-        for (int i = 1; i < m + 1; ++i)
-            for (int j = 1; j < n + 1; ++j)
-            {
-                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i - 1][j - 1];
-            }
-        return dp[m][n];
+
+//213. 打家劫舍 II
+//你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+
+//给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+
+        int n = nums.size();
+        if (n == 0) return 0;
+        return max(rob1(nums, 1, n - 1), nums[0] + rob1(nums, 2, n - 2));
+    }
+
+    int rob1(vector<int>& nums, int left, int right) {
+        if (left > right)  return 0;
+        int n = nums.size();
+        vector<int> f(n);//f[i]表示偷i位置的的最大值金额
+        auto g = f;//g[i]表示不偷i位置的的最大值金额
+        f[left] = nums[left];
+        for (int i = left + 1; i <= right; ++i)
+        {
+            f[i] = g[i - 1] + nums[i];
+            g[i] = max(f[i - 1], g[i - 1]);
+        }
+        return max(f[right], g[right]);
     }
 };
