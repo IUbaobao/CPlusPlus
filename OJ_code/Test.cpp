@@ -626,27 +626,89 @@ public:
 //你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
 
 //给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+//
+//class Solution {
+//public:
+//    int rob(vector<int>& nums) {
+//
+//        int n = nums.size();
+//        if (n == 0) return 0;
+//        return max(rob1(nums, 1, n - 1), nums[0] + rob1(nums, 2, n - 2));
+//    }
+//
+//    int rob1(vector<int>& nums, int left, int right) {
+//        if (left > right)  return 0;
+//        int n = nums.size();
+//        vector<int> f(n);//f[i]表示偷i位置的的最大值金额
+//        auto g = f;//g[i]表示不偷i位置的的最大值金额
+//        f[left] = nums[left];
+//        for (int i = left + 1; i <= right; ++i)
+//        {
+//            f[i] = g[i - 1] + nums[i];
+//            g[i] = max(f[i - 1], g[i - 1]);
+//        }
+//        return max(f[right], g[right]);
+//    }
+//};
 
-class Solution {
-public:
-    int rob(vector<int>& nums) {
+//740. 删除并获得点数
+// 给你一个整数数组 nums ，你可以对它进行一些操作。
+//
+//每次操作中，选择任意一个 nums[i] ，删除它并获得 nums[i] 的点数。之后，你必须删除 所有 等于 nums[i] - 1 和 nums[i] + 1 的元素。
+//
+//开始你拥有 0 个点数。返回你能通过这些操作获得的最大点数。
 
-        int n = nums.size();
-        if (n == 0) return 0;
-        return max(rob1(nums, 1, n - 1), nums[0] + rob1(nums, 2, n - 2));
-    }
+//class Solution {
+//public:
+//    int deleteAndEarn(vector<int>& nums) {
+//        const int N = 10001;
+//        int arr[N] = { 0 };
+//        //将相同的值映射到相应的数组下标--转化成打家劫舍问题
+//        for (int i = 0; i < nums.size(); ++i)
+//        {
+//            arr[nums[i]] += nums[i];
+//        }
+//
+//        vector<int> f(N);
+//        auto g = f;
+//        for (int i = 1; i < N; i++)
+//        {
+//            f[i] = g[i - 1] + arr[i];
+//            g[i] = max(g[i - 1], f[i - 1]);
+//        }
+//        return max(f[N - 1], g[N - 1]);
+//    }
+//};
 
-    int rob1(vector<int>& nums, int left, int right) {
-        if (left > right)  return 0;
-        int n = nums.size();
-        vector<int> f(n);//f[i]表示偷i位置的的最大值金额
-        auto g = f;//g[i]表示不偷i位置的的最大值金额
-        f[left] = nums[left];
-        for (int i = left + 1; i <= right; ++i)
-        {
-            f[i] = g[i - 1] + nums[i];
-            g[i] = max(f[i - 1], g[i - 1]);
-        }
-        return max(f[right], g[right]);
-    }
-};
+//
+//剑指 Offer II 091. 粉刷房子
+//假如有一排房子，共 n 个，每个房子可以被粉刷成红色、蓝色或者绿色这三种颜色中的一种，你需要粉刷所有的房子并且使其相邻的两个房子颜色不能相同。
+//当然，因为市场上不同颜色油漆的价格不同，所以房子粉刷成不同颜色的花费成本也是不同的。每个房子粉刷成不同颜色的花费是以一个 n x 3 的正整数矩阵 costs 来表示的。
+//例如，costs[0][0] 表示第 0 号房子粉刷成红色的成本花费；costs[1][2] 表示第 1 号房子粉刷成绿色的花费，以此类推。
+//请计算出粉刷完所有房子最少的花费成本。
+
+//class Solution {
+//public:
+//    int minCost(vector<vector<int>>& costs) {
+//        //状态表示
+//        // dp[i][0]:表示第i个房子粉刷成红色花费的最小成本
+//        // dp[i][1]:表示第i个房子粉刷成蓝色花费的最小成本
+//        // dp[i][2]:表示第i个房子粉刷成绿色花费的最小成本
+//        //状态转移方程
+//        // dp[i][O]=min(dp[i-1][1],dp[i-1][2])+costs[i][0]
+//        // dp[i][1]=min(dp[i-1][0],dp[i-1][2])+costs[i][1]
+//        // dp[i][2]=min(dp[i-1][0],dpli-1][1])+costs[i][2]
+//
+//        int n = costs.size();
+//        //多开一行虚拟节点，注意下标映射关系
+//        vector<vector<int>> dp(n + 1, vector<int>(3));
+//        for (int i = 1; i < n + 1; i++)
+//        {
+//            dp[i][0] = min(dp[i - 1][1], dp[i - 1][2]) + costs[i - 1][0];
+//            dp[i][1] = min(dp[i - 1][0], dp[i - 1][2]) + costs[i - 1][1];
+//            dp[i][2] = min(dp[i - 1][0], dp[i - 1][1]) + costs[i - 1][2];
+//        }
+//        return min(dp[n][0], min(dp[n][1], dp[n][2]));
+//    }
+//};
+
