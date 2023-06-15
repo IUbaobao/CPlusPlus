@@ -712,3 +712,226 @@ public:
 //    }
 //};
 
+
+//309. 最佳买卖股票时机含冷冻期
+//class Solution {
+//public:
+//    int maxProfit(vector<int>& prices) {
+//        int n = prices.size();
+//
+//        vector<vector<int>> dp(n, vector<int>(3));
+//        dp[0][0] = -prices[0];
+          //dp[i][0] 表示第天处于买入状态的最大利润
+         //dp[i][1] 表示第i天处于 可交易状态的最大利润
+          //dp[i][2] 表示第i天处于冷冻期状态的最大利润
+//        for (int i = 1; i < n; ++i)
+//        {
+//            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+//            dp[i][1] = max(dp[i - 1][1], dp[i - 1][2]);
+//            dp[i][2] = dp[i - 1][0] + prices[i];
+//        }
+//
+//        return max(dp[n - 1][1], dp[n - 1][2]);
+//    }
+//};
+
+
+//714. 买卖股票的最佳时机含手续费
+//给定一个整数数组 prices，其中 prices[i]表示第 i 天的股票价格 ；整数 fee 代表了交易股票的手续费用。
+//
+//你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
+//
+//返回获得利润的最大值。
+//
+//注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+
+//class Solution {
+//public:
+//    int maxProfit(vector<int>& prices, int fee) {
+//        int n = prices.size();
+//
+//
+//        //1.建表
+//        vector<int> g(n), f(n);
+//        //1.1状态表示
+//        //g[i]表示第i天处于买入状态的最大利润
+//        //f[i]表示第i天处于卖出状态的最大利润
+//        //2.初始化
+//        g[0] = -prices[0];
+//
+//        for (int i = 1; i < n; ++i)
+//        {
+//            //3.状态转移方程
+//            g[i] = max(g[i - 1], f[i - 1] - prices[i]);
+//            f[i] = max(g[i - 1] + prices[i] - fee, f[i - 1]);
+//        }
+//
+//        return f[n - 1];
+//    }
+//};
+
+//123. 买卖股票的最佳时机 III
+//给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。
+//
+//设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。
+//
+//注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）
+
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        const int INF = -0x3F3F3F3F;
+        vector<vector<int>> g(n, vector<int>(3, INF));
+        auto f = g;
+        // f[i][k]:表示第i天处于第k 笔交易 买入状态的最大利润
+        // g[i][k]: 表示第i天处于k 笔交易 卖出状态的最大利润
+
+        f[0][0] = -prices[0];
+        g[0][0] = 0;
+        for (int i = 1; i < n; ++i)
+        {
+            for (int k = 0; k < 3; ++k)
+            {
+                f[i][k] = max(f[i - 1][k], g[i - 1][k] - prices[i]);
+                g[i][k] = g[i - 1][k];
+                if (k >= 1)
+                    g[i][k] = max(g[i][k], f[i - 1][k - 1] + prices[i]);
+            }
+        }
+        int ret = INF;
+        for (int i = 0; i < 3; ++i)
+        {
+            ret = max(ret, g[n - 1][i]);
+        }
+        return ret;
+    }
+};
+
+
+//188. 买卖股票的最佳时机 IV
+//给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格，和一个整型 k 。
+//
+//设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。也就是说，你最多可以买 k 次，卖 k 次。
+//
+//注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        const int INF = -0x3F3F3F3F;
+        vector<vector<int>> g(n, vector<int>(k + 1, INF));
+        auto f = g;
+        // f[i][k]:表示第i天处于第k 笔交易 买入状态的最大利润
+        // g[i][k]: 表示第i天处于k 笔交易 卖出状态的最大利润
+
+        f[0][0] = -prices[0];
+        g[0][0] = 0;
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 0; j < k + 1; ++j)
+            {
+                f[i][j] = max(f[i - 1][j], g[i - 1][j] - prices[i]);
+                g[i][j] = g[i - 1][j];
+                if (j >= 1)
+                    g[i][j] = max(g[i][j], f[i - 1][j - 1] + prices[i]);
+            }
+        }
+        int ret = INF;
+        for (int i = 0; i < k + 1; ++i)
+        {
+            ret = max(ret, g[n - 1][i]);
+        }
+        return ret;
+
+    }
+};
+
+
+//152. 乘积最大子数组
+//给你一个整数数组 nums ，请你找出数组中乘积最大的非空连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+//
+//测试用例的答案是一个 32 - 位 整数。
+//
+//子数组 是数组的连续子序列。
+
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+
+        vector<int> f(n + 1, 1), g(n + 1, 1);
+        int result = nums[0];
+        for (int i = 1; i <= n; ++i)
+        {
+            int a = f[i - 1] * nums[i - 1], b = g[i - 1] * nums[i - 1];
+            f[i] = max(a, max(b, nums[i - 1]));
+            g[i] = min(a, min(b, nums[i - 1]));
+            result = max(result, f[i]);
+        }
+        return result;
+    }
+};
+
+
+//1567. 乘积为正数的最长子数组长度
+//给你一个整数数组 nums ，请你求出乘积为正数的最长子数组的长度。
+//
+//一个数组的子数组是由原数组中零个或者更多个连续数字组成的数组。
+//
+//请你返回乘积为正数的最长子数组长度。
+
+class Solution {
+public:
+    int getMaxLen(vector<int>& nums) {
+        int n = nums.size();
+
+        vector<int> f(n + 1), g(n + 1);
+        int ret = 0;
+       /* f[i] 表⽰：以 i 结尾的所有⼦数组中，乘积为「正数」的最⻓⼦数组的⻓度；
+          g[i] 表⽰：以 i 结尾的所有⼦数组中，乘积为「负数」的最⻓⼦数组的⻓度。*/
+        for (int i = 1; i <= n; ++i)
+        {
+            if (nums[i - 1] == 0) g[i] = f[i] = 0;
+            else if (nums[i - 1] > 0) {
+                f[i] = f[i - 1] + 1;
+                g[i] = g[i - 1] == 0 ? 0 : g[i - 1] + 1;
+            }
+            else {
+                f[i] = g[i - 1] == 0 ? 0 : g[i - 1] + 1;
+                g[i] = f[i - 1] + 1;
+            }
+            ret = max(ret, f[i]);
+        }
+        return ret;
+    }
+};
+
+
+//413. 等差数列划分
+//如果一个数列 至少有三个元素 ，并且任意两个相邻元素之差相同，则称该数列为等差数列。
+//
+//例如，[1, 3, 5, 7, 9]、[7, 7, 7, 7] 和[3, -1, -5, -9] 都是等差数列。
+//给你一个整数数组 nums ，返回数组 nums 中所有为等差数组的 子数组 个数。
+//
+//子数组 是数组中的一个连续序列
+
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        int n = nums.size();
+
+        vector<int> dp(n);
+        // dp[i] 表⽰必须以i 位置的元素为结尾的等差数列有多少种
+        int sum = 0;
+        for (int i = 2; i < n; ++i)
+        {
+            dp[i] = nums[i - 1] - nums[i - 2] == nums[i] - nums[i - 1] ? dp[i - 1] + 1 : 0;
+            sum += dp[i];
+        }
+        return sum;
+    }
+};
